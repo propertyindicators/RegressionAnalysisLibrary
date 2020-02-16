@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1000
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reganalysis", "Reganalysis\Reganalysis.csproj", "{DF66BE22-C80F-4A01-865F-A7B3FB023B2B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReganalysisTest", "Reganalysis\ReganalysisTest.csproj", "{DF66BE22-C80F-4A01-865F-A7B3FB023B2B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RA Library", "RA Library\RA Library.csproj", "{321510DC-78BE-43C6-96B1-1C087700F961}"
 EndProject
@@ -24,5 +24,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {85A56C9A-390E-4865-B470-3CE92B00064F}
 	EndGlobalSection
 EndGlobal

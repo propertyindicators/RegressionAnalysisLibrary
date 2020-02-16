@@ -1,94 +1,93 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RA_Library
+namespace RALibrary
 {
-    /// <summary>
-    /// Класс сета данных реганализа
-    /// </summary>
-    public class RAData
-    {
-        public double[][] inputs;
-        public double[] outputs;
-        public double[] valuations;
+	/// <summary>
+	/// Standard data set for regression analysis
+	/// </summary>
+	public class RAData
+	{
+		public double[][] Inputs;
+		public double[] Outputs;
+		public double[] Valuations;
 
-        /// <summary>
-        /// пустой конструктор без инициализации данных
-        /// </summary>
-        public RAData() { }
+		public RAData() { } // Base constructor is needed for supporting clone functionality
 
-        /// <summary>
-        /// инициализирует данные реганализа композицей другого сета данных RAData или унаследованного класса по ссылке (без клонирования)
-        /// </summary>
-        /// <param name="init">инициализирующий сет данных, содержащий RAData</param>
-        public RAData(RAData init)
-        {
-            inputs = init.inputs;
-            outputs = init.outputs;
-            valuations = init.valuations;
-        }
+		/// <summary>
+		/// Creates new RAData object that refers to already existing RAData object
+		/// </summary>
+		/// <param name="initRAData">Initial RAData object</param>
+		public RAData(RAData initRAData)
+		{
+			Inputs = initRAData.Inputs;
+			Outputs = initRAData.Outputs;
+			Valuations = initRAData.Valuations;
+		}
 
-        /// <summary>
-        /// инициализирует данные реганализа композицей конкретных массивов с данными по ссылке (без клонирования)
-        /// </summary>
-        /// <param name="inputs_init">инициализирующий массив параметров</param>
-        /// <param name="outputs_init">инициализирующий массив фактически наблюдаемых значений наблюдаемой функции, описывающей предметную область модели</param>
-        /// <param name="valuations_init">инициализирующий массив регресионных значений (необязательный параметр)</param>
-        public RAData(double[][] inputs_init, double[] outputs_init, double[] valuations_init = null)
-        {
-            inputs = inputs_init;
-            outputs = outputs_init;
-            valuations = valuations_init;
-        }
 
-        /// <summary>
-        /// метод преобразования столбцов таблицы (двумерного массива double) параметров X
-        /// </summary>
-        /// <param name="ColumnOperator"></param>
-        public void inputsTransform(int colindex, Func<double, double> func)
-        {
-            if (inputs == null)
-                throw new InvalidOperationException("RAData.ColumnTransform: попытка трансформирования столбца таблицы параметров X не инициализированного объекта данных!");
-            if (colindex > inputs[0].Length)
-                throw new InvalidOperationException("RAData.ColumnTransform: попытка трансформирования не существующего столбца (индекс за пределами массива)!");
-            foreach (double[] m in inputs) { m[colindex] = func(m[colindex]); }
-        }
+		/// <summary>
+		/// Transforms column of Inputs data set with predefined rule
+		/// </summary>
+		/// <param name="func">Transform function</param>
+		public void InputsTransform(int colIndex, Func<double, double> func)
+		{
+			if (Inputs == null)
+				throw new InvalidOperationException("Could not transform column of null or empty Inputs data set");
+			if (colIndex > Inputs[0].Length)
+				throw new ArgumentException("'colIndex' parameter is out of range");
+			foreach (double[] m in Inputs)
+			{
+				m[colIndex] = func(m[colIndex]);
+			}
+		}
 
-        /// <summary>
-        /// метод преобразования столбцов массива  фактического результата наблюдения Y
-        /// </summary>
-        /// <param name="ColumnOperator"></param>
-        public void outputsTransform(Func<double, double> func)
-        {
-            if (outputs == null)
-                throw new InvalidOperationException("RAData.ColumnTransform: попытка трансформирования массива значений Y наблдений не инициализированного объекта данных");
-            for (int i = 0; i < outputs.Length; i++) { outputs[i] = func(outputs[i]); }
-        }
+		/// <summary>
+		/// Transforms Outputs array with predefined rule
+		/// </summary>
+		/// <param name="func">Transform function</param>
+		public void OutputsTransform(Func<double, double> func)
+		{
+			if (Outputs == null)
+				throw new InvalidOperationException("Could not transform null or empty Outputs array");
+			for (int i = 0; i < Outputs.Length; i++)
+			{
+				Outputs[i] = func(Outputs[i]);
+			}
+		}
 
-        /// <summary>
-        /// метод клонирования базовых данных реганализа - с клонированием массивов
-        /// </summary>
-        /// <param name="toclone"></param>
-        /// <returns></returns>
-        public RAData CloneData()
-        {
-            //inputs
-            RAData temp = new RAData();
-            if (inputs != null)
-                if (inputs.Length != 0)
-                {
-                    temp.inputs = new double[inputs.Length][];
-                    for (int i = 0; i < inputs.Length; i++) { temp.inputs[i] = (double[])inputs[i].Clone(); }
-                }
-                else { temp.inputs = (double[][])inputs.Clone(); }
-            //inputs
-            if (outputs != null) { temp.outputs = (double[])outputs.Clone(); }
-            //valuations
-            if (valuations != null) { temp.valuations = (double[])valuations.Clone(); }
-            return temp;
-        }
-    }
+		/// <summary>
+		/// Clones RAData object
+		/// </summary>
+		public RAData CloneData()
+		{
+			// Inputs
+			RAData temp = new RAData();
+			if (Inputs != null)
+			{
+				if (Inputs.Length != 0)
+				{
+					temp.Inputs = new double[Inputs.Length][];
+					for (int i = 0; i < Inputs.Length; i++)
+					{
+						temp.Inputs[i] = (double[])Inputs[i].Clone();
+					}
+				}
+				else
+				{
+					temp.Inputs = (double[][])Inputs.Clone();
+				}
+			}
+			// Outputs
+			if (Outputs != null)
+			{
+				temp.Outputs = (double[])Outputs.Clone();
+			}
+			// Valuations
+			if (Valuations != null)
+			{
+				temp.Valuations = (double[])Valuations.Clone();
+			}
+			return temp;
+		}
+	}
 }
